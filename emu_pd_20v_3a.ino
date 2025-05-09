@@ -4,6 +4,8 @@ autor: angellfear <angell@angellfear.ru>
 
 */
 
+// закоментировать если надо для дуо
+#define max2
 
 #include <Wire.h>
 
@@ -21,14 +23,16 @@ autor: angellfear <angell@angellfear.ru>
 #define PD_SRC_CURRENT_MASK 0x0F // Биты [3:0] для тока
 
 // Поддерживаемые уровни мощности
-//#define SUPPORTED_VOLTAGE 0b0100  // 15 В
-//#define SUPPORTED_CURRENT 0b1010  // 3 А
-// Поддерживаемые уровни мощности
+#ifdef max2
+#define SUPPORTED_VOLTAGE 0b0100  // 15 В
+#define SUPPORTED_CURRENT 0b1010  // 3 А
+#else
 #define SUPPORTED_VOLTAGE 0b0110  // 20 В
 #define SUPPORTED_CURRENT 0b1101  // 3.25 А
+#endif
 
-#define SDA_0 12
-#define SCL_0 13
+#define SDA_0 4
+#define SCL_0 5
 
 // Регистр состояния
 uint8_t pd_status0 = 0;
@@ -40,7 +44,7 @@ void setup() {
   Serial.println("HUSB238 эмулятор запущен");
 
   // Настройка I2C в режиме slave
-  Wire.begin(SDA_0,SCL_0);
+//  Wire.begin(SDA_0,SCL_0);
   Wire.begin(HUSB238_ADDRESS);
   Wire.onRequest(onRequest);
   Wire.onReceive(onReceive);
